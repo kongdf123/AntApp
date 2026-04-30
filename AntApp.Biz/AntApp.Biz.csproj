@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AntApp.Domain\AntApp.Domain.csproj" />
+    <ProjectReference Include="..\AntApp.Infra\AntApp.Infra.csproj" />
+  </ItemGroup>
+
+</Project>
