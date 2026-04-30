@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblTemperature = new Label();
             lblPressure = new Label();
             lblStatus = new Label();
@@ -43,7 +43,7 @@
             // lblTemperature
             // 
             lblTemperature.AutoSize = true;
-            lblTemperature.Location = new Point(341, 49);
+            lblTemperature.Location = new Point(455, 49);
             lblTemperature.Name = "lblTemperature";
             lblTemperature.Size = new Size(59, 25);
             lblTemperature.TabIndex = 0;
@@ -52,7 +52,7 @@
             // lblPressure
             // 
             lblPressure.AutoSize = true;
-            lblPressure.Location = new Point(459, 49);
+            lblPressure.Location = new Point(573, 49);
             lblPressure.Name = "lblPressure";
             lblPressure.Size = new Size(59, 25);
             lblPressure.TabIndex = 1;
@@ -61,7 +61,7 @@
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(587, 49);
+            lblStatus.Location = new Point(530, 444);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(59, 25);
             lblStatus.TabIndex = 2;
@@ -89,16 +89,16 @@
             // 
             // chartTemperature
             // 
-            chartArea2.Name = "ChartArea1";
-            chartTemperature.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            chartTemperature.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            chartTemperature.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            chartTemperature.Legends.Add(legend1);
             chartTemperature.Location = new Point(44, 97);
             chartTemperature.Name = "chartTemperature";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            chartTemperature.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            chartTemperature.Series.Add(series1);
             chartTemperature.Size = new Size(602, 332);
             chartTemperature.TabIndex = 5;
             chartTemperature.Text = "chart1";
