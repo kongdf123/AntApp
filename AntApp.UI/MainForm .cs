@@ -4,6 +4,7 @@ using AntApp.Domain.Enums;
 using AntApp.Infra.Communication;
 using System.Collections.Concurrent;
 using System.Data;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AntApp.UI
 {
@@ -14,13 +15,37 @@ namespace AntApp.UI
         private CancellationTokenSource _uiCts;
         private BlockingCollection<Telemetry> _queue = new(1000); // 有界队列（防止内存爆）
 
+        private readonly Queue<Telemetry> _chartBuffer = new();
+        private const int MaxPoints = 50; // 保留50个点
+
         public MainForm()
         {
             InitializeComponent();
 
+            InitChart();
+
             lblTemperature.Text = "--";
             lblPressure.Text = "--";
             lblStatus.Text = DeviceStatus.Disconnected.ToString();
+        }
+
+        private void InitChart()
+        {
+            chartTemperature.Series.Clear();
+            chartTemperature.ChartAreas.Clear();
+
+            var area = new ChartArea("MainArea");
+            area.AxisX.LabelStyle.Format = "HH:mm:ss";
+            area.AxisX.IntervalType = DateTimeIntervalType.Seconds;
+
+            chartTemperature.ChartAreas.Add(area);
+
+            var series = new Series("Temperature");
+            series.ChartType = SeriesChartType.Line;
+            series.XValueType = ChartValueType.DateTime;
+            series.BorderWidth = 2;
+
+            chartTemperature.Series.Add(series);
         }
 
         #region 按钮事件
@@ -134,6 +159,36 @@ namespace AntApp.UI
 
             lblTemperature.Text = t.Temperature.ToString("F2");
             lblPressure.Text = t.Pressure.ToString("F2");
+
+            // 新增：曲线数据
+            UpdateChart(t);
+        }
+
+        private void UpdateChart(Telemetry t)
+        {
+            var series = chartTemperature.Series["Temperature"];
+
+            series.Points.AddXY(t.Timestamp, t.Temperature);
+
+            if (series.Points.Count > MaxPoints)
+                series.Points.RemoveAt(0);
+
+            chartTemperature.ChartAreas[0].RecalculateAxesScale();
+
+            //_chartBuffer.Enqueue(t);
+
+            //if (_chartBuffer.Count > MaxPoints)
+            //    _chartBuffer.Dequeue();
+
+            //var series = chartTemperature.Series["Temperature"];
+            //series.Points.Clear();
+
+            //foreach (var item in _chartBuffer)
+            //{
+            //    series.Points.AddXY(item.Timestamp, item.Temperature);
+            //}
+
+            //chartTemperature.ChartAreas[0].RecalculateAxesScale();
         }
 
         private void UpdateStatus(DeviceStatus state)

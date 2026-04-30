@@ -28,17 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             lblTemperature = new Label();
             lblPressure = new Label();
             lblStatus = new Label();
             btnStart = new Button();
             btnStop = new Button();
+            chartTemperature = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            ((System.ComponentModel.ISupportInitialize)chartTemperature).BeginInit();
             SuspendLayout();
             // 
             // lblTemperature
             // 
             lblTemperature.AutoSize = true;
-            lblTemperature.Location = new Point(148, 47);
+            lblTemperature.Location = new Point(341, 49);
             lblTemperature.Name = "lblTemperature";
             lblTemperature.Size = new Size(59, 25);
             lblTemperature.TabIndex = 0;
@@ -47,7 +52,7 @@
             // lblPressure
             // 
             lblPressure.AutoSize = true;
-            lblPressure.Location = new Point(148, 93);
+            lblPressure.Location = new Point(459, 49);
             lblPressure.Name = "lblPressure";
             lblPressure.Size = new Size(59, 25);
             lblPressure.TabIndex = 1;
@@ -56,7 +61,7 @@
             // lblStatus
             // 
             lblStatus.AutoSize = true;
-            lblStatus.Location = new Point(148, 139);
+            lblStatus.Location = new Point(587, 49);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(59, 25);
             lblStatus.TabIndex = 2;
@@ -64,7 +69,7 @@
             // 
             // btnStart
             // 
-            btnStart.Location = new Point(148, 209);
+            btnStart.Location = new Point(44, 44);
             btnStart.Name = "btnStart";
             btnStart.Size = new Size(112, 34);
             btnStart.TabIndex = 3;
@@ -74,7 +79,7 @@
             // 
             // btnStop
             // 
-            btnStop.Location = new Point(316, 209);
+            btnStop.Location = new Point(181, 44);
             btnStop.Name = "btnStop";
             btnStop.Size = new Size(112, 34);
             btnStop.TabIndex = 4;
@@ -82,11 +87,28 @@
             btnStop.UseVisualStyleBackColor = true;
             btnStop.Click += btnStop_Click;
             // 
+            // chartTemperature
+            // 
+            chartArea2.Name = "ChartArea1";
+            chartTemperature.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            chartTemperature.Legends.Add(legend2);
+            chartTemperature.Location = new Point(44, 97);
+            chartTemperature.Name = "chartTemperature";
+            series2.ChartArea = "ChartArea1";
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            chartTemperature.Series.Add(series2);
+            chartTemperature.Size = new Size(602, 332);
+            chartTemperature.TabIndex = 5;
+            chartTemperature.Text = "chart1";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(693, 481);
+            Controls.Add(chartTemperature);
             Controls.Add(btnStop);
             Controls.Add(btnStart);
             Controls.Add(lblStatus);
@@ -94,6 +116,7 @@
             Controls.Add(lblTemperature);
             Name = "MainForm";
             Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)chartTemperature).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -105,5 +128,6 @@
         private Label lblStatus;
         private Button btnStart;
         private Button btnStop;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartTemperature;
     }
 }
