@@ -2,6 +2,7 @@
 using AntApp.Domain.Entities;
 using AntApp.Domain.Enums;
 using AntApp.Infra.Communication;
+using Serilog;
 using System.Collections.Concurrent;
 using System.Data;
 using System.Text.Json;
@@ -55,10 +56,16 @@ namespace AntApp.UI
         {
             try
             {
+                Log.Information("Start button clicked");
+
                 _uiCts = new CancellationTokenSource();
                 Task.Run(() => UiConsumeLoop(_uiCts.Token));
 
-                _client = new TcpDeviceClient("127.0.0.1", 5000);
+
+                var _ip = "127.0.0.1";
+                var _port = 5000;
+                _client = new TcpDeviceClient(_ip, _port);
+                Log.Information("Connecting to {Ip}:{Port}", _ip, _port);
 
                 // 订阅事件
                 _client.OnDataReceived += OnDataReceived;
@@ -68,6 +75,7 @@ namespace AntApp.UI
             }
             catch (Exception ex)
             {
+                Log.Error(ex, "Failed to start client");
                 MessageBox.Show($"启动失败: {ex.Message}");
             }
         }
@@ -102,14 +110,19 @@ namespace AntApp.UI
 
                 var telemetry = JsonSerializer.Deserialize<Telemetry>(raw);
 
-                // 放入队列（非阻塞）
-                if (!_queue.TryAdd(telemetry))
+                if (telemetry != null)
                 {
-                    // 队列满 → 丢弃（工业系统常见策略）
+                    Log.Debug("Parsed telemetry: {@Telemetry}", telemetry);
+                    // 放入队列（非阻塞）
+                    if (!_queue.TryAdd(telemetry))
+                    {
+                        // 队列满 → 丢弃（工业系统常见策略）
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Warning(ex, "Failed to parse telemetry");
                 // 忽略解析错误（工业场景常见）
             }
         }

@@ -1,4 +1,5 @@
 ﻿using AntApp.Domain.Enums;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -67,6 +68,7 @@ namespace AntApp.Infra.Communication
                 }
                 catch
                 {
+                    Log.Warning("Connection lost, retrying...");
                     SetState(DeviceStatus.Reconnecting);
                     await Task.Delay(3000, token); // 等待5秒后重试连接
                 }
@@ -76,6 +78,7 @@ namespace AntApp.Infra.Communication
         private void SetState(DeviceStatus state)
         {
             State = state;
+            Log.Information("Connection state changed: {State}", state);
             OnStatusChanged?.Invoke(state);
         }
 
