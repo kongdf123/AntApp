@@ -1,6 +1,8 @@
 ﻿using System.Net.Sockets;
 using System.Net;
 using System.Text;
+using AntApp.Domain.Entities;
+using System.Text.Json;
 
 namespace AntApp.Simulator
 {
@@ -59,8 +61,17 @@ namespace AntApp.Simulator
                     double temp = rand.Next(20, 100);
                     double pressure = temp / 2;
 
+                    var telemetry = new Telemetry
+                    {
+                        Timestamp = DateTime.Now,
+                        Temperature = temp,
+                        Pressure = pressure
+                    };
+
                     // ✅ 加换行（解决粘包）
-                    var msg = $"{{\"Temperature\":{temp:F2},\"Pressure\":{pressure:F2}}}\n";
+                    // Serialize to JSON and add newline for message boundary
+                    var msg = JsonSerializer.Serialize(telemetry) + "\n";
+                    //var msg = $"{{\"Temperature\":{temp:F2},\"Pressure\":{pressure:F2}}}\n";
 
                     var data = Encoding.UTF8.GetBytes(msg);
 
