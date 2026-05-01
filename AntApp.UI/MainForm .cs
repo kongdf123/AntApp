@@ -4,6 +4,7 @@ using AntApp.Domain.Enums;
 using AntApp.Infra.Communication;
 using System.Collections.Concurrent;
 using System.Data;
+using System.Text.Json;
 using System.Windows.Forms.DataVisualization.Charting;
 
 namespace AntApp.UI
@@ -90,14 +91,16 @@ namespace AntApp.UI
         {
             try
             {
-                double temp = double.Parse(raw);
+                //double temp = double.Parse(raw);
 
-                var telemetry = new Telemetry
-                {
-                    Timestamp = DateTime.Now,
-                    Temperature = temp,
-                    Pressure = temp / 2
-                };
+                //var telemetry = new Telemetry
+                //{
+                //    Timestamp = DateTime.Now,
+                //    Temperature = temp,
+                //    Pressure = temp / 2
+                //};
+
+                var telemetry = JsonSerializer.Deserialize<Telemetry>(raw);
 
                 // 放入队列（非阻塞）
                 if (!_queue.TryAdd(telemetry))

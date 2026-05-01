@@ -113,21 +113,50 @@ namespace AntApp.Infra.Communication
                 }
             }
         }
-
         private async Task ReceiveLoopAsync(CancellationToken token)
         {
             byte[] buffer = new byte[1024];
+            StringBuilder sb = new StringBuilder();
+
             while (!token.IsCancellationRequested)
             {
-                int len = await _networkStream.ReadAsync(buffer, 0, buffer.Length);
+                int len = await _networkStream.ReadAsync(buffer, 0, buffer.Length, token);
                 if (len == 0)
                 {
                     throw new Exception("Connection closed by remote host");
                 }
 
-                string msg = Encoding.UTF8.GetString(buffer, 0, len);
-                OnDataReceived?.Invoke(msg);
+                sb.Append(Encoding.UTF8.GetString(buffer, 0, len));
+
+                string data = sb.ToString();
+                int newlineIndex;
+                while ((newlineIndex = data.IndexOf('\n')) >= 0)
+                {
+                    string line = data.Substring(0, newlineIndex).Trim();
+                    if (!string.IsNullOrEmpty(line))
+                    {
+                        OnDataReceived?.Invoke(line);
+                    }
+                    data = data.Substring(newlineIndex + 1);
+                }
+                sb.Clear();
+                sb.Append(data);
             }
         }
+        ////private async Task ReceiveLoopAsync(CancellationToken token)
+        ////{
+        ////    byte[] buffer = new byte[1024];
+        ////    while (!token.IsCancellationRequested)
+        ////    {
+        ////        int len = await _networkStream.ReadAsync(buffer, 0, buffer.Length);
+        ////        if (len == 0)
+        ////        {
+        ////            throw new Exception("Connection closed by remote host");
+        ////        }
+
+        ////        string msg = Encoding.UTF8.GetString(buffer, 0, len);
+        ////        OnDataReceived?.Invoke(msg);
+        ////    }
+        ////}
     }
 }
